@@ -3,6 +3,8 @@ package com.api.wall.services;
 import com.api.wall.models.User;
 import com.api.wall.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,17 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User getUser(int id) {
+	public User getUserById(int id) {
 		return userRepository.findById(id).orElse(null);
+	}
+
+	private Integer findId(String userName) {
+		return userRepository.findIdByUserName(userName);
+	}
+
+	@Override
+	public Integer getIdByUserName(String userName) {
+		return findId(userName);
 	}
 
 	@Override
@@ -31,7 +42,7 @@ public class UserService implements IUserService {
 	public User updateUser(User user, Integer id) {
 		User userToUpdate = userRepository.findById(id).orElse(null);
 		if (userToUpdate != null) {
-			userToUpdate.setUsername(user.getUsername());
+			userToUpdate.setUserName(user.getUserName());
 			userToUpdate.setEmail(user.getEmail());
 			userToUpdate.setPasswd(user.getPasswd());
 		}

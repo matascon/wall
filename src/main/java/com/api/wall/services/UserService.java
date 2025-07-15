@@ -33,6 +33,13 @@ public class UserService implements IUserService {
 		return findId(userName);
 	}
 
+	private String findPasswd(Integer id) {
+		return userRepository.findPasswdByUserId(id);
+	}
+
+	@Override
+	public String getPasswdById(Integer id) { return findPasswd(id); }
+
 	@Override
 	public User createUser(User user) {
 		return userRepository.save(user);

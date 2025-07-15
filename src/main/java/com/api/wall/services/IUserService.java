@@ -13,6 +13,8 @@ public interface IUserService {
 
 	public Integer getIdByUserName(String userName);
 
+	public String getPasswdById(Integer id);
+
 	public User createUser(User user);
 
 	public User updateUser(User user, Integer id);

@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
-	@Query(value = "SELECT users.id FROM users WHERE users.user_name = :userName", nativeQuery = true)
+	@Query(value = "SELECT id FROM users WHERE user_name = :userName", nativeQuery = true)
 	Integer findIdByUserName(@Param("userName") String userName);
+
+	@Query(value = "SELECT passwd FROM users WHERE id = :id", nativeQuery = true)
+	String findPasswdByUserId(@Param("id") Integer id);
 }

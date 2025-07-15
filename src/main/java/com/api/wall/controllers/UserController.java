@@ -1,5 +1,7 @@
 package com.api.wall.controllers;
 
+import com.api.wall.dto.DataLogin;
+import com.api.wall.dto.TurnStrToJson;
 import com.api.wall.models.User;
 import com.api.wall.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +16,38 @@ public class UserController {
 	private IUserService userService;
 
 	@GetMapping
-	public List<User> getUsers() {return this.userService.getUsers();}
+	public List<User> getUsers() { return this.userService.getUsers(); }
 
 	@GetMapping(path = "/{id}")
-	public User getUser(@PathVariable Integer id) {return this.userService.getUserById(id);}
+	public User getUser(@PathVariable Integer id) { return this.userService.getUserById(id); }
 
+	//MAIN METHODS FOR WALL
+	//	👇
 
-	// ARREGLAR ESTO DE ABAJO!!!!!
-	@PostMapping
-	public boolean validateUser(@RequestBody String userName) {
-		if (this.userService.getIdByUserName(userName) != null) {
+	@PostMapping("/validateUser")
+	public boolean validateUser(@RequestBody TurnStrToJson request) {
+		if (this.userService.getIdByUserName(request.userName()) != null) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	//ARREGLAR ESTO DE ARRIBA!!!!!
+	@PostMapping("/loginUser")
+	public boolean loginUser(@RequestBody DataLogin request) {
+		if (this.userService.getIdByUserName(request.userName()) != null) {
+			if (this.userService.getPasswdById(this.userService.getIdByUserName(request.userName())).equals(request.passwd())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-	@PostMapping
-	public User createUser(@RequestBody User user) {return this.userService.createUser(user);}
+	@PostMapping("/create")
+	public User createUser(@RequestBody User user) { return this.userService.createUser(user); }
+
+	//	☝️
+	//MAIN METHODS FOR WALL
 
 	@PutMapping(path = "{id}")
 	public User updateUser(@RequestBody User user, @PathVariable Integer id) {

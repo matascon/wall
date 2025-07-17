@@ -1,7 +1,7 @@
 package com.api.wall.controllers;
 
 import com.api.wall.dto.DataLogin;
-import com.api.wall.dto.TurnStrToJson;
+import com.api.wall.dto.DataValidateUser;
 import com.api.wall.models.User;
 import com.api.wall.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserController {
 	//	👇
 
 	@PostMapping("/validateUser")
-	public boolean validateUser(@RequestBody TurnStrToJson request) {
+	public boolean validateUser(@RequestBody DataValidateUser request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
 			return true;
 		} else {
@@ -43,7 +43,7 @@ public class UserController {
 		return false;
 	}
 
-	@PostMapping("/create")
+	@PostMapping("/registerUser")
 	public User createUser(@RequestBody User user) { return this.userService.createUser(user); }
 
 	//	☝️

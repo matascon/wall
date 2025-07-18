@@ -34,13 +34,13 @@ public class UserController {
 	}
 
 	@PostMapping("/loginUser")
-	public boolean loginUser(@RequestBody DataLogin request) {
+	public DataLogin loginUser(@RequestBody DataLogin request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
 			if (this.userService.getPasswdById(this.userService.getIdByUserName(request.userName())).equals(request.passwd())) {
-				return true;
+				return request;
 			}
 		}
-		return false;
+		return null  ;
 	}
 
 	@PostMapping("/registerUser")

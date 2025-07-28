@@ -12,8 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	@Autowired
-	private IUserService userService;
+	private final IUserService userService;
+
+	public UserController(IUserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping
 	public List<User> getUsers() { return this.userService.getUsers(); }
@@ -25,11 +28,11 @@ public class UserController {
 	//	👇
 
 	@PostMapping("/validateUser")
-	public boolean validateUser(@RequestBody DataValidateUser request) {
+	public DataValidateUser validateUser(@RequestBody DataValidateUser request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
-			return true;
+			return request;
 		} else {
-			return false;
+			return null;
 		}
 	}
 

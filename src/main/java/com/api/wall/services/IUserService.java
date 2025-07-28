@@ -1,8 +1,6 @@
 package com.api.wall.services;
 
 import com.api.wall.models.User;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

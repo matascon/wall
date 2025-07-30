@@ -1,14 +1,13 @@
 package com.api.wall.services;
 
-import com.api.wall.dto.DataPost;
+import com.api.wall.dto.DataPostDTO;
+import com.api.wall.dto.ResponsePostDTO;
 import com.api.wall.models.Post;
 import com.api.wall.models.User;
 import com.api.wall.repositories.IPostRepository;
 import com.api.wall.repositories.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +22,11 @@ public class PostService implements IPostService{
 	}
 
 	@Override
-	public List<DataPost> getPosts() {
+	public List<ResponsePostDTO> getPosts() {
 		List<Post> posts = postRepository.findAll();
 
 		return posts.stream()
-				.map(post -> new DataPost(
+				.map(post -> new ResponsePostDTO(
 						post.getId(),
 						post.getTitle(),
 						post.getContent(),
@@ -37,31 +36,33 @@ public class PostService implements IPostService{
 	}
 
 	@Override
-	public Post getPostById(int id) {
-		return this.postRepository.findById(id).orElse(null);
+	public ResponsePostDTO getPostById(int id) {
+		Post post = this.postRepository.findById(id).orElse(null);
+		if (post != null) {
+			return new ResponsePostDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt(), post.getUser().getUserName());
+		}
+		return null;
 	}
 
 	@Override
-	public Post createPost(DataPost post) {
-		User user = this.userRepository.findByUserName(post.getUserName());
+	public Post createPost(DataPostDTO dataPost) {
+		User user = this.userRepository.findByUserName(dataPost.getUserName());
 
 		Post newPost = new Post();
-		newPost.setTitle(post.getTitle());
-		newPost.setContent(post.getContent());
-		newPost.setCreatedAt(post.getCreatedAt());
+		newPost.setTitle(dataPost.getTitle());
+		newPost.setContent(dataPost.getContent());
 		newPost.setUser(user);
 
 		return this.postRepository.save(newPost);
 	}
 
 	@Override
-	public Post updatePost(DataPost post) {
-		Post postToUpdate = this.postRepository.findById(post.getId()).orElse(null);
+	public Post updatePost(DataPostDTO dataPost, int postId) {
+		Post postToUpdate = this.postRepository.findById(postId).orElse(null);
 		if (postToUpdate != null) {
-			postToUpdate.setTitle(post.getTitle());
-			postToUpdate.setContent(post.getContent());
-			postToUpdate.setCreatedAt(post.getCreatedAt());
-			postToUpdate.setUser(this.userRepository.findByUserName(post.getUserName()));
+			postToUpdate.setTitle(dataPost.getTitle());
+			postToUpdate.setContent(dataPost.getContent());
+			postToUpdate.setUser(this.userRepository.findByUserName(dataPost.getUserName()));
 			return this.postRepository.save(postToUpdate);
 		}
 		return null;

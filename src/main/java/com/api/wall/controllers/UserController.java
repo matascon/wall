@@ -1,10 +1,9 @@
 package com.api.wall.controllers;
 
-import com.api.wall.dto.DataLogin;
-import com.api.wall.dto.DataValidateUser;
+import com.api.wall.dto.LoginUserDTO;
+import com.api.wall.dto.ValidateUserDTO;
 import com.api.wall.models.User;
 import com.api.wall.services.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class UserController {
 	//	👇
 
 	@PostMapping("/validateUser")
-	public DataValidateUser validateUser(@RequestBody DataValidateUser request) {
+	public ValidateUserDTO validateUser(@RequestBody ValidateUserDTO request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
 			return request;
 		} else {
@@ -37,13 +36,13 @@ public class UserController {
 	}
 
 	@PostMapping("/loginUser")
-	public DataLogin loginUser(@RequestBody DataLogin request) {
+	public LoginUserDTO loginUser(@RequestBody LoginUserDTO request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
 			if (this.userService.getPasswdById(this.userService.getIdByUserName(request.userName())).equals(request.passwd())) {
 				return request;
 			}
 		}
-		return null  ;
+		return null;
 	}
 
 	@PostMapping("/registerUser")
@@ -52,7 +51,7 @@ public class UserController {
 	//	☝️
 	//MAIN METHODS FOR WALL
 
-	@PutMapping(path = "{id}")
+	@PutMapping(path = "/{id}")
 	public User updateUser(@RequestBody User user, @PathVariable Integer id) {
 		return this.userService.updateUser(user, id);
 	}

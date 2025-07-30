@@ -1,19 +1,19 @@
 package com.api.wall.services;
 
-import com.api.wall.dto.DataPost;
+import com.api.wall.dto.DataPostDTO;
+import com.api.wall.dto.ResponsePostDTO;
 import com.api.wall.models.Post;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public interface IPostService {
-	public List<DataPost> getPosts();
+	public List<ResponsePostDTO> getPosts();
 
-	public Post getPostById(int postId);
+	public ResponsePostDTO getPostById(int postId);
 
-	public Post createPost(DataPost post);
+	public Post createPost(DataPostDTO dataPost);
 
-	public Post updatePost(DataPost post);
+	public Post updatePost(DataPostDTO dataPost, int id);
 
 	public boolean deletePost(int postId);
 

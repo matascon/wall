@@ -2,7 +2,10 @@ package com.api.wall.controllers;
 
 import com.api.wall.dto.DataPostDTO;
 import com.api.wall.dto.ResponsePostDTO;
+import com.api.wall.models.Post;
 import com.api.wall.services.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +14,8 @@ import java.util.List;
 @RequestMapping("/api/post")
 public class PostController {
 	private final PostService postService;
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
 	public PostController(PostService postService) {
 		this.postService = postService;
@@ -23,9 +28,24 @@ public class PostController {
 	public ResponsePostDTO getPostById(@PathVariable int id) { return postService.getPostById(id); }
 
 	@PostMapping("/createPost")
+	public ResponsePostDTO createPost(@RequestBody DataPostDTO dataPostDTO) {
+		Post post = postService.createPost(dataPostDTO);
+		ResponsePostDTO responsePostDto = new ResponsePostDTO(
+				post.getId(),
+				post.getTitle(),
+				post.getContent(),
+				post.getCreatedAt(),
+				post.getUser().getUserName());
+		messagingTemplate.convertAndSend("/topic/posts", responsePostDto);
+		return responsePostDto;
+	}
+
+	/*
+	@PostMapping("/createPost")
 	public boolean createPost(@RequestBody DataPostDTO dataPost) {
 		return this.postService.createPost(dataPost) != null;
 	}
+	*/
 
 	@PutMapping(path="/updatePost/{id}")
 	public boolean updatePost(@RequestBody DataPostDTO dataPost, @PathVariable int id) {

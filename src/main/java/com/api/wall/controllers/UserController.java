@@ -4,6 +4,8 @@ import com.api.wall.dto.LoginUserDTO;
 import com.api.wall.dto.ValidateUserDTO;
 import com.api.wall.models.User;
 import com.api.wall.services.IUserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +32,8 @@ public class UserController {
 	public ValidateUserDTO validateUser(@RequestBody ValidateUserDTO request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
 			return request;
-		} else {
-			return null;
 		}
+		return new ValidateUserDTO(null);
 	}
 
 	@PostMapping("/loginUser")
@@ -42,11 +43,11 @@ public class UserController {
 				return request;
 			}
 		}
-		return null;
+		return new LoginUserDTO(null, null);
 	}
 
 	@PostMapping("/registerUser")
-	public User createUser(@RequestBody User user) { return this.userService.createUser(user); }
+	public User registerUser(@RequestBody User user) { return this.userService.createUser(user); }
 
 	//	☝️
 	//MAIN METHODS FOR WALL

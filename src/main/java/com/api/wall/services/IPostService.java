@@ -9,6 +9,8 @@ import java.util.List;
 public interface IPostService {
 	public List<ResponsePostDTO> getPosts();
 
+	public List<ResponsePostDTO> getPostsForPostList(int limit, int offset);
+
 	public ResponsePostDTO getPostById(int postId);
 
 	public Post createPost(DataPostDTO dataPost);

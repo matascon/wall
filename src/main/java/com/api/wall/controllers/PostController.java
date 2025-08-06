@@ -21,11 +21,20 @@ public class PostController {
 		this.postService = postService;
 	}
 
+	/*
 	@GetMapping
 	public List<ResponsePostDTO> getPosts() { return this.postService.getPosts(); }
+	 */
 
+	@GetMapping("/getPosts/{numberPostsPrinted}")
+	public List<ResponsePostDTO> getPostsForPostList(@PathVariable int numberPostsPrinted) {
+		return this.postService.getPostsForPostList(5, numberPostsPrinted);
+	}
+
+	/*
 	@GetMapping(path="/{id}")
 	public ResponsePostDTO getPostById(@PathVariable int id) { return postService.getPostById(id); }
+	*/
 
 	@PostMapping("/createPost")
 	public ResponsePostDTO createPost(@RequestBody DataPostDTO dataPostDTO) {
@@ -45,7 +54,7 @@ public class PostController {
 	public boolean createPost(@RequestBody DataPostDTO dataPost) {
 		return this.postService.createPost(dataPost) != null;
 	}
-	*/
+
 
 	@PutMapping(path="/updatePost/{id}")
 	public boolean updatePost(@RequestBody DataPostDTO dataPost, @PathVariable int id) {
@@ -56,4 +65,5 @@ public class PostController {
 	public boolean deletePost(@PathVariable int id) {
 		return this.postService.deletePost(id);
 	}
+	*/
 }

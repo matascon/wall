@@ -35,6 +35,24 @@ public class PostService implements IPostService{
 				)).collect(Collectors.toList());
 	}
 
+	private List<ResponsePostDTO> findPostsForPostList(int limit, int offset) {
+		List<Post> posts = postRepository.findPostsForPostList(limit, offset);
+
+		return posts.stream()
+				.map(post -> new ResponsePostDTO(
+						post.getId(),
+						post.getTitle(),
+						post.getContent(),
+						post.getCreatedAt(),
+						post.getUser().getUserName()
+				)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ResponsePostDTO> getPostsForPostList(int limit, int offset){
+		return findPostsForPostList(limit, offset);
+	}
+
 	@Override
 	public ResponsePostDTO getPostById(int id) {
 		Post post = this.postRepository.findById(id).orElse(null);

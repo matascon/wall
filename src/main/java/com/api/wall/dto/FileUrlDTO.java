@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataPostDTO {
-	private String title;
-	private String content;
+public class FileUrlDTO {
 	private String fileUrl;
-	private String userName;
 }

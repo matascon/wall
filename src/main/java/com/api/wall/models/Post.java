@@ -22,6 +22,7 @@ public class Post {
 	@Column(name="created_at", updatable=false, nullable=false)
 	@CreationTimestamp
 	private LocalDateTime createdAt;
+	private String fileUrl;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")

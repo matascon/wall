@@ -14,5 +14,6 @@ public class ResponsePostDTO {
 	private String title;
 	private String content;
 	private LocalDateTime createdAt;
+	private String fileUrl;
 	private String userName;
 }

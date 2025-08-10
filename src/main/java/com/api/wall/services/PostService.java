@@ -31,6 +31,7 @@ public class PostService implements IPostService{
 						post.getTitle(),
 						post.getContent(),
 						post.getCreatedAt(),
+						post.getFileUrl(),
 						post.getUser().getUserName()
 				)).collect(Collectors.toList());
 	}
@@ -44,6 +45,7 @@ public class PostService implements IPostService{
 						post.getTitle(),
 						post.getContent(),
 						post.getCreatedAt(),
+						post.getFileUrl(),
 						post.getUser().getUserName()
 				)).collect(Collectors.toList());
 	}
@@ -57,7 +59,8 @@ public class PostService implements IPostService{
 	public ResponsePostDTO getPostById(int id) {
 		Post post = this.postRepository.findById(id).orElse(null);
 		if (post != null) {
-			return new ResponsePostDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt(), post.getUser().getUserName());
+			return new ResponsePostDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt(),
+					post.getFileUrl(), post.getUser().getUserName());
 		}
 		return null;
 	}
@@ -69,6 +72,7 @@ public class PostService implements IPostService{
 		Post newPost = new Post();
 		newPost.setTitle(dataPost.getTitle());
 		newPost.setContent(dataPost.getContent());
+		newPost.setFileUrl(dataPost.getFileUrl());
 		newPost.setUser(user);
 
 		return this.postRepository.save(newPost);
@@ -80,6 +84,7 @@ public class PostService implements IPostService{
 		if (postToUpdate != null) {
 			postToUpdate.setTitle(dataPost.getTitle());
 			postToUpdate.setContent(dataPost.getContent());
+			postToUpdate.setFileUrl(dataPost.getFileUrl());
 			postToUpdate.setUser(this.userRepository.findByUserName(dataPost.getUserName()));
 			return this.postRepository.save(postToUpdate);
 		}

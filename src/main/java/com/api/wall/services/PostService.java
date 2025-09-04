@@ -7,6 +7,7 @@ import com.api.wall.models.User;
 import com.api.wall.repositories.IPostRepository;
 import com.api.wall.repositories.IUserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;

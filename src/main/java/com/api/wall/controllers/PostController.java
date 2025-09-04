@@ -47,8 +47,12 @@ public class PostController {
 	@PostMapping("/uploadImage")
 	public ResponseEntity<FileUrlDTO> uploadImage(@RequestParam("file") MultipartFile file) {
 		try {
-			String imageUrl = cloudinaryService.uploadImage(file);
-			return ResponseEntity.ok(new FileUrlDTO(imageUrl));
+			String fileName = file.getOriginalFilename();
+			if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".webp")) {
+				String imageUrl = cloudinaryService.uploadImage(file);
+				return ResponseEntity.ok(new FileUrlDTO(imageUrl));
+			}
+			return ResponseEntity.ok(null);
 		} catch (IOException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new FileUrlDTO("There was an error while uploading the image"));
 		}
@@ -80,10 +84,10 @@ public class PostController {
 	public boolean updatePost(@RequestBody DataPostDTO dataPost, @PathVariable int id) {
 		return this.postService.updatePost(dataPost, id) != null;
 	}
-
+	*/
 	@DeleteMapping("/deletePost/{id}")
 	public boolean deletePost(@PathVariable int id) {
 		return this.postService.deletePost(id);
 	}
-	*/
+
 }

@@ -5,32 +5,24 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name="posts")
+@Table(name="comments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String title;
 	private String content;
-	@Column(name="created_at", updatable=false, nullable=false)
-	@CreationTimestamp
-	private LocalDateTime createdAt;
-	private String fileUrl;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ManyToOne
+	@JoinColumn(name = "post_id")
 	@JsonIgnore
-	private List<Comment> comments;
+	private Post post;
 }

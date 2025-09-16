@@ -30,6 +30,7 @@ public class CommentService implements ICommentService {
 
 		return comments.stream()
 				.map(comment -> new ResponseCommentDTO(
+						comment.getId(),
 						comment.getContent(),
 						comment.getUser().getUserName()
 				)).collect(Collectors.toList());
@@ -56,6 +57,7 @@ public class CommentService implements ICommentService {
 		Comment comment = generateComment(dataComment);
 		ResponseCommentDTO responseCommentDTO = new ResponseCommentDTO();
 
+		responseCommentDTO.setId(comment.getId());
 		responseCommentDTO.setContent(comment.getContent());
 		responseCommentDTO.setUserName(comment.getUser().getUserName());
 

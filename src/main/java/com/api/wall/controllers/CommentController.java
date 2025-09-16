@@ -37,7 +37,7 @@ public class CommentController {
 	public ResponseEntity<ResponseCommentDTO> createComment(@RequestBody DataCommentDTO dataComment) {
 		try {
 			ResponseCommentDTO responseCommentDTO = commentService.createComment(dataComment);
-			messagingTemplate.convertAndSend(("/topic/comments/") + dataComment.getPostId(), responseCommentDTO);
+			messagingTemplate.convertAndSend("/topic/comments/" + dataComment.getPostId(), responseCommentDTO);
 			return ResponseEntity.status(HttpStatus.CREATED).body(responseCommentDTO);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

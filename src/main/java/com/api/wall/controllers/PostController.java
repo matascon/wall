@@ -29,20 +29,10 @@ public class PostController {
 		this.postService = postService;
 	}
 
-	/*
-	@GetMapping
-	public List<ResponsePostDTO> getPosts() { return this.postService.getPosts(); }
-	 */
-
 	@GetMapping("/getPosts/{numberPostsPrinted}")
 	public List<ResponsePostDTO> getPostsForPostList(@PathVariable int numberPostsPrinted) {
 		return this.postService.getPostsForPostList(5, numberPostsPrinted);
 	}
-
-	/*
-	@GetMapping(path="/{id}")
-	public ResponsePostDTO getPostById(@PathVariable int id) { return postService.getPostById(id); }
-	*/
 
 	@PostMapping("/uploadImage")
 	public ResponseEntity<FileUrlDTO> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -73,18 +63,6 @@ public class PostController {
 		return responsePostDto;
 	}
 
-	/*
-	@PostMapping("/createPost")
-	public boolean createPost(@RequestBody DataPostDTO dataPost) {
-		return this.postService.createPost(dataPost) != null;
-	}
-
-
-	@PutMapping(path="/updatePost/{id}")
-	public boolean updatePost(@RequestBody DataPostDTO dataPost, @PathVariable int id) {
-		return this.postService.updatePost(dataPost, id) != null;
-	}
-	*/
 	@DeleteMapping("/deletePost/{id}")
 	public boolean deletePost(@PathVariable int id) {
 		return this.postService.deletePost(id);

@@ -19,15 +19,6 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping
-	public List<User> getUsers() { return this.userService.getUsers(); }
-
-	@GetMapping(path = "/{id}")
-	public User getUser(@PathVariable Integer id) { return this.userService.getUserById(id); }
-
-	//MAIN METHODS FOR WALL
-	//	👇
-
 	@PostMapping("/validateUser")
 	public ValidateUserDTO validateUser(@RequestBody ValidateUserDTO request) {
 		if (this.userService.getIdByUserName(request.userName()) != null) {
@@ -49,22 +40,4 @@ public class UserController {
 	@PostMapping("/registerUser")
 	public User registerUser(@RequestBody User user) { return this.userService.createUser(user); }
 
-	//	☝️
-	//MAIN METHODS FOR WALL
-
-	@PutMapping(path = "/{id}")
-	public User updateUser(@RequestBody User user, @PathVariable Integer id) {
-		return this.userService.updateUser(user, id);
-	}
-
-	@DeleteMapping(path = "/{id}")
-	public boolean deleteUser(@PathVariable Integer id) {
-		if (this.userService.deleteUser(id)) {
-			System.out.println("User " + id + " was deleted successfully");
-			return true;
-		} else {
-			System.out.println("User " + id + " was not deleted");
-			return false;
-		}
-	}
 }

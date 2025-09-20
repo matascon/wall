@@ -19,10 +19,11 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.cors(withDefaults())
-				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
+		http
+				.cors(withDefaults())
+				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/ws/**"))
 				.authorizeHttpRequests(authz -> authz
-						.requestMatchers("/api/**").permitAll()
+						.requestMatchers("/api/**", "/ws/**").permitAll()
 						.anyRequest().authenticated()
 				);
 		return http.build();

@@ -3,9 +3,7 @@ package com.api.wall.controllers;
 import com.api.wall.dto.LoginUserDTO;
 import com.api.wall.dto.ValidateUserDTO;
 import com.api.wall.models.User;
-import com.api.wall.services.IUserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.api.wall.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +11,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	private final IUserService userService;
+	private final UserService userService;
 
-	public UserController(IUserService userService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 

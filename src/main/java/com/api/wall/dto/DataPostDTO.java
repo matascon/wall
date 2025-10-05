@@ -12,4 +12,5 @@ public class DataPostDTO {
 	private String content;
 	private String fileUrl;
 	private String userName;
+	private String passwd;
 }

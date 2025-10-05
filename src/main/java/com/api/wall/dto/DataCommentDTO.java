@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class DataCommentDTO {
 	private String content;
 	private String userName;
+	private String passwd;
 	private Integer postId;
 }

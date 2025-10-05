@@ -4,6 +4,7 @@ import com.api.wall.dto.DataCommentDTO;
 import com.api.wall.dto.ResponseCommentDTO;
 import com.api.wall.models.Comment;
 import com.api.wall.services.CommentService;
+import com.api.wall.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,19 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
 	private final CommentService commentService;
+	private final UserService userService;
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
-	public CommentController(CommentService commentService) {
+	public CommentController(CommentService commentService, UserService userService) {
 		this.commentService = commentService;
+		this.userService = userService;
 	}
 
 	@GetMapping("/getComments/{postId}")
 	public ResponseEntity<List<ResponseCommentDTO>> getCommentsByPostId(@PathVariable int postId) {
 		try {
-			List<ResponseCommentDTO> comments = commentService.getCommentsByPostId(postId);
+			List<ResponseCommentDTO> comments = this.commentService.getCommentsByPostId(postId);
 			return ResponseEntity.status(HttpStatus.OK).body(comments);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -34,13 +37,16 @@ public class CommentController {
 	}
 
 	@PostMapping("/createComment")
-	public ResponseEntity<ResponseCommentDTO> createComment(@RequestBody DataCommentDTO dataComment) {
-		try {
-			ResponseCommentDTO responseCommentDTO = commentService.createComment(dataComment);
-			messagingTemplate.convertAndSend("/topic/comments/" + dataComment.getPostId(), responseCommentDTO);
-			return ResponseEntity.status(HttpStatus.CREATED).body(responseCommentDTO);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	public ResponseEntity<ResponseCommentDTO> createComment(@RequestBody DataCommentDTO dataCommentDTO) {
+		if (this.userService.getPasswdById(this.userService.getIdByUserName(dataCommentDTO.getUserName())).equals(dataCommentDTO.getPasswd())) {
+			try {
+				ResponseCommentDTO responseCommentDTO = this.commentService.createComment(dataCommentDTO);
+				messagingTemplate.convertAndSend("/topic/comments/" + dataCommentDTO.getPostId(), responseCommentDTO);
+				return ResponseEntity.status(HttpStatus.CREATED).body(responseCommentDTO);
+			} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+			}
 		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 }
